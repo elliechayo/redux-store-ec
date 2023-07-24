@@ -8,19 +8,27 @@ import {
   UPDATE_CURRENT_CATEGORY,
   CLEAR_CART,
   TOGGLE_CART,
-} from './actions';
+} from "./actions";
 
-// TODO: To get a better understand of how a reducer works - add comments to the various actions in the reducer
-export const reducer = (state, action) => {
+const defaultState = {
+  products: [],
+  cart: [],
+  cartOpen: false,
+  categories: [],
+  currentCategory: "",
+};
+
+const reducer = (state = defaultState, action) => {
   switch (action.type) {
-    // TODO: Add a comment describing the functionality of the UPDATE_PRODUCTS case
-    // Your comment here
+    // replace the products in the state with the products from the action
     case UPDATE_PRODUCTS:
       return {
         ...state,
         products: [...action.products],
       };
 
+    // spread the existing cart items in state into an array and
+    // add the new product from the action to that array
     case ADD_TO_CART:
       return {
         ...state,
@@ -33,8 +41,9 @@ export const reducer = (state, action) => {
         ...state,
         cart: [...state.cart, ...action.products],
       };
-    // TODO: Add a comment describing the functionality of the UPDATE_CART_QUANTITY case
-    // Your comment here
+    // map through cart items and check if id matches with the id from action,
+    // if true then set the purchaseQuantity
+    // finally return the product
     case UPDATE_CART_QUANTITY:
       return {
         ...state,
@@ -47,8 +56,7 @@ export const reducer = (state, action) => {
         }),
       };
 
-    // TODO: Add a comment describing the functionality of the REMOVE_FROM_CART case
-    // Your comment here
+    // remove a product based on the id from action using the array filter method
     case REMOVE_FROM_CART:
       let newState = state.cart.filter((product) => {
         return product._id !== action._id;
@@ -85,9 +93,10 @@ export const reducer = (state, action) => {
         currentCategory: action.currentCategory,
       };
 
-    // TODO: Add a comment describing what the default case is for
-    // Your comment here
+    // for default case, leave as default values
     default:
       return state;
   }
 };
+
+export default reducer;
